@@ -9,12 +9,8 @@ namespace Domain.Models
     public class TextFileModel
     {
         //– FileName(Guid), UploadedOn, Data, Author, LastEditedBy, LastUpdated
-
-        //[Key]       //an attribute applied to an Id - these attributes are for database generation
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int Id { get; set; }
-
-
+        [Key]
+        public int Id { get; set; }
 
         public Guid FileName { get; set; }
         public DateTime UploadedOn { get; set; }

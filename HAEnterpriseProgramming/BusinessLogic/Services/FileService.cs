@@ -1,76 +1,93 @@
-﻿using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//using BusinessLogic.ViewModels;
+//using Domain.Models;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
 
-namespace BusinessLogic.Services
-{
-    public class FileService
-    {
-        private ItemsRepository ir;
+//namespace BusinessLogic.Services
+//{
+//    public class FileService
+//    {
+//        public FileService() { }
 
-        public ItemsServices(ItemsRepository _itemRepository)
-        {
-            ir = _itemRepository;
-        }
+//        private TextFileDbRepository txtfr;
+
+//        public FileService(TextFileDbRepository _textFileRepository)
+//        {
+//            txtfr = _textFileRepository;
+//        }
+
+//        public void Create(CreateTextFileViewModel textFile)
+//        {
+
+//            if (txtfr.GetFileEntries().Any(f => f.FileName == textFile.FileName))
+//                throw new Exception("File with the same name already exists");
+//            else
+//            {
+//                txtfr.Create(new Domain.Models.TextFileModel()
+//                {
+//                    FileName = textFile.FileName,
+//                    UploadedOn = textFile.UploadedOn,
+//                    Data = textFile.Data,
+//                    Author = textFile.Author,
+//                    LastEditedBy = textFile.LastEditedBy,
+//                    LastUpdated = textFile.LastUpdated
+//                });
+//            }
+
+//        }
 
 
+//        //public void Create(TextFileModel file)
+//        //{
+//        //    // Calculate the checksum of the file data
+//        //    var checksum = CalculateChecksum(file.Data);
 
-        private TextFileDbRepository repository;
+//        //    // Set the checksum on the file model
+//        //    file.Checksum = checksum;
 
-        public FileService(TextFileDbRepository _textFileRepository)
-        {
-            repository = _textFileRepository;
-        }
+//        //    // Create the file in the repository
+//        //    _textFileRepository.Create(file);
+//        //}
 
-        public void Share(int fileId, string recipient)
-        {
-            repository.Share(fileId, recipient);
-        }
 
-        public void Edit(int fileId, string changes)
-        {
-            // Validate that the user has permission to edit the file
-            var file = repository.GetFile(fileId);
-            if (file.Author != User.Identity.Name && !file.Recipients.Contains(User.Identity.Name))
-            {
-                throw new UnauthorizedAccessException("You do not have permission to edit this file.");
-            }
+//        //public void Share(int fileId, string recipient)
+//        //{
+//        //    txtfr.Share(fileId, recipient);
+//        //}
 
-            // Calculate the checksum of the updated data
-            var checksum = CalculateChecksum(changes);
+//        //public void Edit(int fileId, string changes)
+//        //{
+//        //    // Validate that the user has permission to edit the file
+//        //    var file = txtfr.GetFile(fileId);
+//        //    if (file.Author != User.Identity.Name && !file.Recipients.Contains(User.Identity.Name))
+//        //    {
+//        //        throw new UnauthorizedAccessException("You do not have permission to edit this file.");
+//        //    }
 
-            // Update the file in the repository
-            repository.Edit(fileId, changes, checksum);
-        }
+//        //    // Calculate the checksum of the updated data
+//        //    var checksum = CalculateChecksum(changes);
 
-        public void Create(TextFileModel file)
-        {
-            // Calculate the checksum of the file data
-            var checksum = CalculateChecksum(file.Data);
+//        //    // Update the file in the repository
+//        //    txtfr.Edit(fileId, changes, checksum);
+//        //}
 
-            // Set the checksum on the file model
-            file.Checksum = checksum;
+//        //public TextFileModel GetFile(int fileId)
+//        //{
+//        //    return txtfr.GetFile(fileId);
+//        //}
 
-            // Create the file in the repository
-            _repository.Create(file);
-        }
+//        //public List<TextFileModel> GetPermissions()
+//        //{
+//        //    return txtfr.GetPermissions();
+//        //}
 
-        public TextFileModel GetFile(int fileId)
-        {
-            return repository.GetFile(fileId);
-        }
-
-        public List<TextFileModel> GetPermissions()
-        {
-            return repository.GetPermissions();
-        }
-
-        private string CalculateChecksum(string data)
-        {
-            // Calculate the checksum of the data
-            // (This is just an example. You should use a more secure hash algorithm in production.)
-            return data.GetHashCode().ToString();
-        }
-    }
-}
+//        //private string CalculateChecksum(string data)
+//        //{
+//        //    // Calculate the checksum of the data
+//        //    // (This is just an example. You should use a more secure hash algorithm in production.)
+//        //    return data.GetHashCode().ToString();
+//        //}
+//    }
+//}
