@@ -1,5 +1,5 @@
 using AsynchronousFileTransferWebsite.Data;
-//using BusinessLogic.Services;
+using BusinessLogic.Services;
 using DataAccess.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,8 +39,8 @@ namespace AsynchronousFileTransferWebsite
 
 
 
-            //services.AddScoped<FileService>();
-            //services.AddScoped<TextFileDBRepository>();
+            services.AddScoped<FileService>();
+            services.AddScoped<TextFileDBRepository>();
 
 
         }

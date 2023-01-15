@@ -9,8 +9,6 @@ namespace BusinessLogic.Services
 {
     public class FileService
     {
-        public FileService() { }
-
         private TextFileDbRepository txtfr;
 
         public FileService(TextFileDbRepository _textFileFepository)
@@ -38,6 +36,11 @@ namespace BusinessLogic.Services
 
         }
 
+        public TextFileViewModel GetFile(int id)
+        {
+            return GetFiles().SingleOrDefault(x => x.Id == id);
+        }
+
 
         public void Create(TextFileModel file)
         {
@@ -51,17 +54,44 @@ namespace BusinessLogic.Services
             _textFileFepository.create(file);
         }
 
-
-        public void Share(int fileid, string recipient)
+        public IQueryable<TextFileViewModel> GetFiles()
         {
-            txtfr.Share(fileid, recipient);
+            var list = from f in txtfr.GetFileEntries()
+                       select new TextFileViewModel()
+                       {
+                           FileName = f.FileName,
+                           UploadedOn = f.UploadedOn,
+                           Data = f.Data,
+                           Author = f.Author,
+                           LastEditedBy = f.LastEditedBy,
+                           LastUpdated = f.LastUpdated
+                       };
+            return list;
         }
 
-        public void Edit(int fileid, string changes)
+        public TextFileViewModel GetFiles(int id)
+        {
+            return GetFiles().SingleOrDefault(x => x.Id == id);
+        }
+
+
+
+        public IQueryable<TextFileViewModel> Search(string keyword)
+        {
+            return GetFiles().Where(x => x.FileName.Contains(keyword));
+        }
+
+
+        public void Share(int fileId, string recipient)
+        {
+            txtfr.Share(fileId, recipient);
+        }
+
+        public void Edit(int fileId, string changes)
         {
             // validate that the user has permission to edit the file
             var file = txtfr.GetFile(fileId);
-            if (file.author != user.identity.name && !file.recipients.contains(user.identity.name))
+            if (file.Author != User.Identity.Name && !file.recipients.contains(User.Identity.Name))
             {
                 throw new UnauthorizedAccessException("You do not have permission to edit this file.");
             }
@@ -70,7 +100,7 @@ namespace BusinessLogic.Services
             var checksum = CalculateChecksum(changes);
 
             // update the file in the repository
-            txtfr.Edit(fileid, changes, checksum);
+            txtfr.Edit(fileId, changes, checksum);
         }
 
         public TextFileModel GetFile(int fileId)
@@ -91,3 +121,4 @@ namespace BusinessLogic.Services
         }
     }
 }
+
