@@ -1,0 +1,98 @@
+﻿@model IEnumerable<BusinessLogic.ViewModels.ItemViewModel>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+<form method="post" action="/Items/Search" class="row g-3">
+    <div class="col-auto">
+        Search:&nbsp;
+    </div>
+    <div class="col-md-6">
+        <input type="text" class="form-control" name="keyword" />&nbsp;
+    </div>
+    <div class="col-auto">
+        <input type="submit" value="Submit" class="btn btn-primary mb-3" />
+    </div>
+</form>
+
+@*<form class="row g-3">
+    <div class="col-auto">
+        <label for="staticEmail2" class="visually-hidden">Email</label>
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+    </div>
+    <div class="col-auto">
+        <label for="inputPassword2" class="visually-hidden">Password</label>
+        <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
+    </div>
+</form>*@
+
+
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.PhotoPath)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            
+            <td>
+                <img src="@item.PhotoPath" style="width:100px; height:100px"/>
+            </td>
+            
+            <td>
+                    @Html.ActionLink("More Info", "Details", new { id=item.Id })
+
+                    |
+
+@*                <a href="/Items/Details/@item.Id">More Info</a>
+*@
+                    @if (User.Identity.IsAuthenticated == true)
+                    {
+                        @Html.ActionLink("Delete", "Delete", new {  id=item.Id  })
+                    } 
+                    
+                    |
+
+                    @if (User.Identity.IsAuthenticated == true)
+                    {
+                        @Html.ActionLink("Edit", "Edit", new {  id=item.Id  })
+                    } 
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
