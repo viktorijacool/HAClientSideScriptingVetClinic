@@ -82,4 +82,35 @@ public class TextFileDbRepository
         return _context.TextFiles.ToList();
     }
 
+
+
+    //public void Share(int fileId, string recipient)
+    //{
+    //    // Retrieve the file from the database using the fileId
+    //    // Add the recipient to the list of users who have access to the file
+    //    // Update the database with the new list of users
+    //}
+    //public void Edit(int fileId, string changes)
+    //{
+    //    // Retrieve the file from the database using the fileId
+    //    // Update the file content with the new changes
+    //    // Update the LastUpdated and LastEditedBy fields
+    //    // Update the database with the new file information
+    //}
+    //public void Create(TextFileModel f)
+    //{
+    //    // Read the content of the file
+    //    // Insert the file information and content into the database
+    //}
+    //public void GetPermissions(int fileId)
+    //{
+    //    // Retrieve the permissions set for the specified file using the fileId
+    //    // Return the permissions
+    //}
+    //public void GetFileEntries()
+    //{
+    //    // Retrieve all file entries from the database
+    //    // Return the list of file entries
+    //}
+
 }

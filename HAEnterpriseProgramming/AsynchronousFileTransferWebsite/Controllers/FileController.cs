@@ -13,10 +13,12 @@ namespace AsynchronousFileTransferWebsite.Controllers
     public class FileController : Controller
     {
         private FileService fileService;
+        private IWebHostEnvironment host;
 
-        public FileController(FileService _fileService)
+        public FileController(FileService _fileService, IWebHostEnvironment _host)
         {
             fileService = _fileService;
+            host = _host;
         }
 
 
@@ -30,28 +32,34 @@ namespace AsynchronousFileTransferWebsite.Controllers
 
         //a method to handle the submission of the form 
         [HttpPost]
-        public IActionResult Create(CreateTextFileViewModel data)
+        public IActionResult Create(CreateTextFileViewModel data, IFormFile file)
         {
             try
             {
-                fileService.Create(data);
-                ViewBag.Message = "Item successfully inserted in database";
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = "Item wasn't inserted successfully. Please check your inputs";
+                if (file != null)
+                {
+                    //1. change filename
+                    string uniqueFilename = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
+
+                    //2. the absolute path of the folder where the image is going...
+
+                    string absolutePath = host.WebRootPath;
+
+                    //3. saving file
+                    using (System.IO.FileStream fsOut = new System.IO.FileStream(absolutePath + "\\Images\\" + uniqueFilename, System.IO.FileMode.CreateNew))
+                    {
+                        file.CopyTo(fsOut);
+                    }
+
+                    ////4. save the path to the image in the database
+                    ////http://localhost:xxxx/Images/filename.jpg
+                    //data.PhotoPath = "/Images/" + uniqueFilename;
+                }
+
             }
         }
 
 
-        private readonly FileService _fileService;
-        private readonly IWebHostEnvironment _environment;
-
-        public FileController(FileService fileService, IWebHostEnvironment environment)
-        {
-            _fileService = fileService;
-            _environment = environment;
-        }
 
         public IActionResult Share(int fileId)
         {
